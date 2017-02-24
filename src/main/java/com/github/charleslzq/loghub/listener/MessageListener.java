@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public interface MessageListener {
     void onMessage(Message<Map<String, String>> message);
+
     default String name() {
         return this.getClass().getName();
     }

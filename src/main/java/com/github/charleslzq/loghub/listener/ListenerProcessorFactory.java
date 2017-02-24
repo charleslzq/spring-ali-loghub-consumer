@@ -7,7 +7,7 @@ import com.github.charleslzq.loghub.converter.LogGroupConverter;
 /**
  * Created by liuzhengqi on 2/24/2017.
  */
-public class ListenerProcessorFactory implements ILogHubProcessorFactory{
+public class ListenerProcessorFactory implements ILogHubProcessorFactory {
     private final MessageListener messageListener;
     private final LogGroupConverter logGroupConverter;
 

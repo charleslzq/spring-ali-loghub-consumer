@@ -4,22 +4,22 @@ import com.aliyun.openservices.loghub.client.config.LogHubConfig;
 import com.aliyun.openservices.loghub.client.config.LogHubCursorPosition;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by liuzhengqi on 2/24/2017.
  */
 @Data
-public class LogStoreConsumerConfig {
+public class LogConsumerConfig {
     private String endpoint;
     private String project;
     private String store;
-
     private String accessId;
     private String accessKey;
-
-    private List<GroupConsumerConfig> consumers = new ArrayList<>();
+    private String groupName;
+    private LogHubCursorPosition cursorPosition = LogHubCursorPosition.END_CURSOR;
+    private int startTime = 0;
+    private long fetchIntervalMillis = 200;
+    private long heartBeatIntervalMillis = 10000;
+    private boolean keepOrder = true;
 
     private LogHubConfig generateLogHubConfig(
             String groupName,
@@ -31,7 +31,7 @@ public class LogStoreConsumerConfig {
             boolean keepOrder
     ) {
         if (LogHubCursorPosition.SPECIAL_TIMER_CURSOR == cursorPosition) {
-            return new LogHubConfig(
+            LogHubConfig config = new LogHubConfig(
                     groupName,
                     consumerName,
                     endpoint,
@@ -43,8 +43,10 @@ public class LogStoreConsumerConfig {
                     heartBeatIntervalMillis,
                     keepOrder
             );
+            config.setDataFetchIntervalMillis(fetchIntervalMillis);
+            return config;
         } else {
-            return new LogHubConfig(
+            LogHubConfig config = new LogHubConfig(
                     groupName,
                     consumerName,
                     endpoint,
@@ -56,26 +58,22 @@ public class LogStoreConsumerConfig {
                     heartBeatIntervalMillis,
                     keepOrder
             );
+            config.setDataFetchIntervalMillis(fetchIntervalMillis);
+            return config;
         }
     }
 
     public LogHubConfig generateLogHubConfig(
-            String groupName,
             String consumerName
     ) {
-        return consumers.stream()
-                .filter(consumer -> groupName.equals(consumer.getGroupName()))
-                .findAny()
-                .map(groupConsumerConfig -> generateLogHubConfig(
-                        groupName,
-                        consumerName,
-                        groupConsumerConfig.getCursorPosition(),
-                        groupConsumerConfig.getStartTime(),
-                        groupConsumerConfig.getFetchIntervalMillis(),
-                        groupConsumerConfig.getHeartBeatIntervalMillis(),
-                        groupConsumerConfig.isKeepOrder()
-                )).orElseThrow(
-                        () -> new IllegalArgumentException("Can't find configuration for group " + groupName)
-                );
+        return generateLogHubConfig(
+                groupName,
+                consumerName,
+                cursorPosition,
+                startTime,
+                fetchIntervalMillis,
+                heartBeatIntervalMillis,
+                keepOrder
+        );
     }
 }

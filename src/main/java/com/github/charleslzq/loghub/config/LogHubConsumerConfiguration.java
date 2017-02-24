@@ -1,6 +1,5 @@
 package com.github.charleslzq.loghub.config;
 
-import com.aliyun.openservices.log.common.LogGroupData;
 import com.github.charleslzq.loghub.converter.DefaultLogGroupConverter;
 import com.github.charleslzq.loghub.converter.LogGroupConverter;
 import com.github.charleslzq.loghub.listener.LogHubListenerContainer;

@@ -29,10 +29,15 @@ class ListenerProcessor implements ILogHubProcessor {
 
     @Override
     public String process(List<LogGroupData> list, ILogHubCheckPointTracker iLogHubCheckPointTracker) {
-        list.stream()
-                .map(converter::convert)
-                .flatMap(List::stream)
-                .forEach(messageListener::onMessage);
+        try {
+            list.stream()
+                    .map(converter::convert)
+                    .flatMap(List::stream)
+                    .forEach(messageListener::onMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return iLogHubCheckPointTracker.getCheckPoint();
+        }
 
         long curTime = System.currentTimeMillis();
         if (curTime - lastCheckTime > 60 * 1000) {

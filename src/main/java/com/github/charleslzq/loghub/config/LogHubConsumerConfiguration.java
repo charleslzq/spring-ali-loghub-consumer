@@ -1,6 +1,7 @@
 package com.github.charleslzq.loghub.config;
 
 import com.github.charleslzq.loghub.converter.DefaultLogGroupConverter;
+import com.github.charleslzq.loghub.converter.LogData;
 import com.github.charleslzq.loghub.converter.LogGroupConverter;
 import com.github.charleslzq.loghub.listener.LogHubListenerContainer;
 import com.github.charleslzq.loghub.listener.MessageListener;
@@ -16,7 +17,6 @@ import org.springframework.messaging.Message;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by liuzhengqi on 2/24/2017.
@@ -75,7 +75,7 @@ public class LogHubConsumerConfiguration {
     public static class SimplePrinter implements MessageListener {
 
         @Override
-        public void onMessage(Message<Map<String, String>> message) {
+        public void onMessage(Message<LogData> message) {
             System.out.println(message);
         }
     }

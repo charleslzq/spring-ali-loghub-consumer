@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class DefaultLogGroupConverter implements LogGroupConverter {
 
     @Override
-    public List<Message<Map<String, String>>> convert(LogGroupData logGroupData) {
+    public List<Message<LogData>> convert(LogGroupData logGroupData) {
         Logs.LogGroup logGroup = logGroupData.GetLogGroup();
         Map<String, String> headers = new HashMap<>();
         headers.put(LogGroupHeaders.SOURCE.getKey(), logGroup.getSource());
@@ -33,11 +33,13 @@ public class DefaultLogGroupConverter implements LogGroupConverter {
                 ).collect(Collectors.toList());
     }
 
-    private Map<String, String> convert(Logs.Log log) {
-        return log.getContentsList().stream()
-                .collect(Collectors.toMap(
-                        content -> content.getKey(),
-                        content -> content.getValue()
-                ));
+    private LogData convert(Logs.Log log) {
+        return new LogData(
+                log.getContentsList().stream()
+                        .collect(Collectors.toMap(
+                                Logs.Log.Content::getKey,
+                                Logs.Log.Content::getValue
+                        ))
+        );
     }
 }

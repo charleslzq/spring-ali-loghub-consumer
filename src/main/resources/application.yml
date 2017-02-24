@@ -1,0 +1,12 @@
+spring:
+  ali:
+    log-hub:
+      consumer:
+        stores:
+          - endpoint: http://cn-shanghai.log.aliyuncs.com
+            project: test-loghub
+            store: test-call
+            accessId: LTAIDkzgfuszr6CO
+            accessKey: XRPL9Hug35h0I4JrSo6b2T8hdXKpAI
+            consumers:
+              - groupName: spring

@@ -37,8 +37,8 @@ public class LogHubConsumerConfiguration {
 
     @Component
     public static class SimplePrinter{
-        @LogHubListener(configName = "test")
-        public void print(Message<LogData> message) {
+        @LogHubListener(configName = "test", topics = "ms-search")
+        public void print(LogData message) {
             System.out.println(message);
         }
     }

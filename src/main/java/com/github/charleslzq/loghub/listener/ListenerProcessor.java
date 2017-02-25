@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 class ListenerProcessor<T> implements ILogHubProcessor {
     private final MessageListener<T> messageListener;
     private final LogConverter<T> logConverter;
-    private int sharId;
+    private int shardId;
     private long lastCheckTime = 0;
 
     ListenerProcessor(MessageListener messageListener, LogConverter<T> logConverter) {
@@ -30,7 +30,7 @@ class ListenerProcessor<T> implements ILogHubProcessor {
 
     @Override
     public void initialize(int shardId) {
-        this.sharId = shardId;
+        this.shardId = shardId;
     }
 
     @Override
@@ -71,7 +71,7 @@ class ListenerProcessor<T> implements ILogHubProcessor {
         headers.put(LogGroupHeaders.TOPIC.getKey(), logGroup.getTopic());
         headers.put(LogGroupHeaders.MACHINE_UUID.getKey(), logGroup.getMachineUUID());
         headers.put(LogGroupHeaders.CATEGORY.getKey(), logGroup.getCategory());
-        headers.put(LogGroupHeaders.SHARD.getKey(), sharId + "");
+        headers.put(LogGroupHeaders.SHARD.getKey(), shardId + "");
 
         return logGroup.getLogsList().stream()
                 .map(log -> MessageBuilder

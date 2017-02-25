@@ -33,14 +33,4 @@ public class LogHubConsumerConfiguration {
     public LogHubListenerBeanPostProcessor logHubListenerBeanPostProcessor() {
         return new LogHubListenerBeanPostProcessor(clientWorkerContainerFactory());
     }
-
-
-    @Component
-    public static class SimplePrinter {
-        @LogHubListener(configName = "test", topics = "ms-search", converter = DefaultLogConverter.class)
-        public void print(LogData message) {
-            System.out.println(message);
-        }
-    }
-
 }

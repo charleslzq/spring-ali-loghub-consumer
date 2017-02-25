@@ -46,7 +46,20 @@ public class MethodLogHubListenerEndpoint implements LogHubListenerEndpoint {
 
     @Override
     public LogConverter getConverter() {
-        return new DefaultLogConverter();
+        Class<? extends LogConverter> converterClass = annotation.converter();
+        LogConverter converter = null;
+        try {
+            converter = converterClass.newInstance();
+            converter.init();
+            return converter;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        converter = new DefaultLogConverter();
+        converter.init();
+        return converter;
     }
 
     @Override

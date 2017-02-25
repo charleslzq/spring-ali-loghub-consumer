@@ -9,6 +9,10 @@ import java.util.stream.Collectors;
  */
 public class DefaultLogConverter implements LogConverter<LogData> {
 
+    public void init() {
+        
+    }
+
     @Override
     public LogData convert(Logs.Log log) {
         return new LogData(

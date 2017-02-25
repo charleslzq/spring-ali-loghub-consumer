@@ -1,5 +1,7 @@
 package com.github.charleslzq.loghub.annotation;
 
+import com.github.charleslzq.loghub.converter.DefaultLogConverter;
+import com.github.charleslzq.loghub.converter.LogConverter;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 
 import java.lang.annotation.*;
@@ -16,4 +18,6 @@ public @interface LogHubListener {
     String configName();
 
     String[] topics() default {};
+
+    Class<? extends LogConverter> converter() default DefaultLogConverter.class;
 }

@@ -20,7 +20,7 @@ public class ClientWorkerContainerFactory {
         }
         LogConsumerConfig config = logHubConsumerProperties.getConfigs().get(endpoint.getConfigName());
         LogHubConfig logHubConfig = config.generateLogHubConfig(endpoint.getName());
-        ClientWorkerContainer<T> container = new ClientWorkerContainer<T>(endpoint.getConverter(), new SimpleAsyncTaskExecutor(), logHubConfig);
+        ClientWorkerContainer<T> container = new ClientWorkerContainer<>(endpoint.getConverter(), new SimpleAsyncTaskExecutor(), logHubConfig);
         container.setMessageListener(endpoint.getListener());
         return container;
     }

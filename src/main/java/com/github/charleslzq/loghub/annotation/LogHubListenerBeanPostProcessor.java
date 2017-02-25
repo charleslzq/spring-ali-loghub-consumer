@@ -19,14 +19,12 @@ import org.springframework.core.Ordered;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.messaging.converter.GenericMessageConverter;
 import org.springframework.messaging.handler.annotation.support.*;
+import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
 import org.springframework.messaging.handler.invocation.InvocableHandlerMethod;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
@@ -151,16 +149,12 @@ public class LogHubListenerBeanPostProcessor implements BeanPostProcessor, Order
             ConfigurableBeanFactory cbf = LogHubListenerBeanPostProcessor.this.beanFactory instanceof ConfigurableBeanFactory ? (ConfigurableBeanFactory) LogHubListenerBeanPostProcessor.this.beanFactory : null;
             DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
             defaultFactory.setConversionService(conversionService);
-            ArrayList argumentResolvers = new ArrayList();
+            List<HandlerMethodArgumentResolver> argumentResolvers = new ArrayList<>();
             argumentResolvers.add(new HeaderMethodArgumentResolver(conversionService, cbf));
             argumentResolvers.add(new HeadersMethodArgumentResolver());
             final GenericMessageConverter messageConverter = new GenericMessageConverter(conversionService);
             argumentResolvers.add(new MessageMethodArgumentResolver(messageConverter));
-            argumentResolvers.add(new PayloadArgumentResolver(messageConverter) {
-                protected boolean isEmptyPayload(Object payload) {
-                    return payload == null;
-                }
-            });
+            argumentResolvers.add(new PayloadArgumentResolver(messageConverter));
             defaultFactory.setArgumentResolvers(argumentResolvers);
             defaultFactory.afterPropertiesSet();
             return defaultFactory;

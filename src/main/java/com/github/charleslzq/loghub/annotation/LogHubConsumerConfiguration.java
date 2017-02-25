@@ -2,12 +2,12 @@ package com.github.charleslzq.loghub.annotation;
 
 import com.github.charleslzq.loghub.config.ClientWorkerContainerFactory;
 import com.github.charleslzq.loghub.config.LogHubConsumerProperties;
+import com.github.charleslzq.loghub.converter.DefaultLogConverter;
 import com.github.charleslzq.loghub.converter.LogData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
 /**
@@ -36,8 +36,8 @@ public class LogHubConsumerConfiguration {
 
 
     @Component
-    public static class SimplePrinter{
-        @LogHubListener(configName = "test", topics = "ms-search")
+    public static class SimplePrinter {
+        @LogHubListener(configName = "test", topics = "ms-search", converter = DefaultLogConverter.class)
         public void print(LogData message) {
             System.out.println(message);
         }

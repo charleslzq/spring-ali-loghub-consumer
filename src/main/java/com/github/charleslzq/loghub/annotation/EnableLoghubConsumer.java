@@ -1,5 +1,7 @@
 package com.github.charleslzq.loghub.annotation;
 
+import org.springframework.context.annotation.Import;
+
 import java.lang.annotation.*;
 
 /**
@@ -8,5 +10,6 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface EnableLoghub {
+@Import(LogHubConsumerConfiguration.class)
+public @interface EnableLoghubConsumer {
 }

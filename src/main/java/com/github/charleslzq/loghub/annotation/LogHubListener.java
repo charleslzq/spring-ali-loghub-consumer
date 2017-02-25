@@ -15,7 +15,5 @@ import java.lang.annotation.*;
 public @interface LogHubListener {
     String configName();
 
-    String name() default "";
-
     String[] topics() default {};
 }

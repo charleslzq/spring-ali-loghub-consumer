@@ -1,4 +1,4 @@
-package com.github.charleslzq.loghub.converter;
+package com.github.charleslzq.loghub.listener;
 
 /**
  * Created by liuzhengqi on 2/24/2017.
@@ -7,7 +7,8 @@ public enum LogGroupHeaders {
     SOURCE("source"),
     TOPIC("topic"),
     MACHINE_UUID("machine_uuid"),
-    CATEGORY("category");
+    CATEGORY("category"),
+    SHARD("shard");
 
     private final String key;
 

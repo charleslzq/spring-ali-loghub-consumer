@@ -1,22 +1,14 @@
 package com.github.charleslzq.loghub.config;
 
-import com.github.charleslzq.loghub.converter.DefaultLogGroupConverter;
+import com.github.charleslzq.loghub.converter.DefaultLogConverter;
+import com.github.charleslzq.loghub.converter.LogConverter;
 import com.github.charleslzq.loghub.converter.LogData;
-import com.github.charleslzq.loghub.converter.LogGroupConverter;
-import com.github.charleslzq.loghub.listener.LogHubListenerContainer;
+import com.github.charleslzq.loghub.listener.ClientWorkerContainer;
 import com.github.charleslzq.loghub.listener.MessageListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.AsyncListenableTaskExecutor;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.core.task.TaskDecorator;
-import org.springframework.messaging.Message;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by liuzhengqi on 2/24/2017.
@@ -32,51 +24,34 @@ public class LogHubConsumerConfiguration {
     @Autowired
     private LogHubConsumerProperties logHubConsumerProperties;
 
-    @Autowired(required = false)
-    private List<TaskDecorator> taskDecorators;
-
     @Bean
-    @ConditionalOnMissingBean
-    public AsyncListenableTaskExecutor logHubListenerRunner() {
-        SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();
-        taskExecutor.setTaskDecorator(
-                taskDecorators == null || taskDecorators.size() == 0 ? null :
-                        runnable -> {
-                            Runnable task = runnable;
-                            for (TaskDecorator decorator : taskDecorators) {
-                                task = decorator.decorate(task);
-                            }
-
-                            return task;
-                        }
-        );
-        return taskExecutor;
+    public ClientWorkerContainer<LogData> clientWorkerContainer() {
+        ClientWorkerContainerFactory factory = new ClientWorkerContainerFactory(logHubConsumerProperties);
+        SimplePrinter printer = new SimplePrinter();
+        return factory.createClientWorkerContainer(printer);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public LogGroupConverter logGroupConverter() {
-        return new DefaultLogGroupConverter();
-    }
 
-    @Bean
-    public LogHubListenerContainer logHubListenerContainer() {
-        LogHubListenerContainer logHubListenerContainer = new LogHubListenerContainer(
-                logHubListenerRunner(),
-                logGroupConverter(),
-                logHubConsumerProperties
-        );
-        logHubListenerContainer.setListenerRegistry(
-                groupName -> Collections.singletonList(new SimplePrinter())
-        );
-        return logHubListenerContainer;
-    }
-
-    public static class SimplePrinter implements MessageListener {
+    public static class SimplePrinter implements LogHubListenerEndpoint<LogData> {
 
         @Override
-        public void onMessage(Message<LogData> message) {
-            System.out.println(message);
+        public String getConfigName() {
+            return "test";
+        }
+
+        @Override
+        public String getName() {
+            return this.getClass().getName();
+        }
+
+        @Override
+        public LogConverter<LogData> getConverter() {
+            return new DefaultLogConverter();
+        }
+
+        @Override
+        public MessageListener<LogData> getListener() {
+            return System.out::println;
         }
     }
 

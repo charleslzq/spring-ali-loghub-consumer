@@ -7,6 +7,4 @@ import com.aliyun.openservices.log.common.Logs;
  */
 public interface LogConverter<T> {
     T convert(Logs.Log log);
-
-    void init();
 }

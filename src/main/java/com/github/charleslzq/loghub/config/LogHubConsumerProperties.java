@@ -13,5 +13,8 @@ import java.util.Map;
 		prefix = "spring.ali.log-hub.consumer"
 )
 public class LogHubConsumerProperties {
+	/**
+	 * configuratoin for consumers. the key can be used to access specific consumer configuration with @LogListener configName.
+	 */
 	private Map<String, LogConsumerConfig> configs;
 }

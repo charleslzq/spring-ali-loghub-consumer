@@ -9,16 +9,49 @@ import lombok.Data;
  */
 @Data
 public class LogConsumerConfig {
+	/**
+	 * the endpoint to access alibaba loghub service
+	 */
 	private String endpoint;
+	/**
+	 * the project to consume message
+	 */
 	private String project;
+	/**
+	 * the store to consume message
+	 */
 	private String store;
+	/**
+	 * the accessId of which can read the project
+	 */
 	private String accessId;
+	/**
+	 * the accessKey of which can read the project
+	 */
 	private String accessKey;
+	/**
+	 * the group name this consumer will use.
+	 */
 	private String groupName;
+	/**
+	 * from which time to read messages.
+	 */
 	private LogHubCursorPosition cursorPosition = LogHubCursorPosition.END_CURSOR;
+	/**
+	 * the offset to read messages. take effect only when cursorPosition is specified as SPECIAL_TIMER_CURSOR.
+	 */
 	private int startTime = 0;
+	/**
+	 * interval of attempts to fetch data from server
+	 */
 	private long fetchIntervalMillis = 200;
+	/**
+	 * interval of heartBeat check
+	 */
 	private long heartBeatIntervalMillis = 10000;
+	/**
+	 * whether to keep message in order or not
+	 */
 	private boolean keepOrder = true;
 
 	private LogHubConfig generateLogHubConfig(

@@ -48,7 +48,7 @@ public class MethodLogHubListenerEndpoint implements LogHubListenerEndpoint {
 				new AcceptAllLogGroupFilter();
 		Class<? extends LogGroupFilter> annotationFilterClass
 				= annotation.groupFilter();
-		if (AcceptAllLogGroupFilter.class.isAssignableFrom(annotationFilterClass)) {
+		if (AcceptAllLogGroupFilter.class.equals(annotationFilterClass)) {
 			return defaultGroupFilter;
 		} else {
 			try {

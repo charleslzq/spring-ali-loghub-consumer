@@ -11,5 +11,5 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 public class LogData {
-    private Map<String, String> contents;
+	private Map<String, String> contents;
 }

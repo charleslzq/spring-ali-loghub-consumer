@@ -2,6 +2,10 @@ package com.github.charleslzq.loghub.annotation;
 
 import com.github.charleslzq.loghub.converter.DefaultLogConverter;
 import com.github.charleslzq.loghub.converter.LogConverter;
+import com.github.charleslzq.loghub.filter.AcceptAllLogFilter;
+import com.github.charleslzq.loghub.filter.AcceptAllLogGroupFilter;
+import com.github.charleslzq.loghub.filter.LogFilter;
+import com.github.charleslzq.loghub.filter.LogGroupFilter;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 
 import java.lang.annotation.*;
@@ -15,9 +19,13 @@ import java.lang.annotation.*;
 @Documented
 @Repeatable(LogHubListeners.class)
 public @interface LogHubListener {
-    String configName();
+	String configName();
 
-    String[] topics() default {};
+	String[] topics() default {};
 
-    Class<? extends LogConverter> converter() default DefaultLogConverter.class;
+	Class<? extends LogGroupFilter> groupFilter() default AcceptAllLogGroupFilter.class;
+
+	Class<? extends LogFilter> logFilter() default AcceptAllLogFilter.class;
+
+	Class<? extends LogConverter> converter() default DefaultLogConverter.class;
 }

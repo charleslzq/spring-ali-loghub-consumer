@@ -6,7 +6,7 @@
 
     <groupId>com.github.charleslzq</groupId>
     <artifactId>spring-aliyun-loghub-consumer</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>spring-aliyun-loghub-consumer</name>
     <description>a project which provides the ability to use the consumer api of alibaba loghub servise in a "Spring"

@@ -9,14 +9,14 @@ import java.util.stream.Collectors;
  */
 public class DefaultLogConverter implements LogConverter<LogData> {
 
-    @Override
-    public LogData convert(Logs.Log log) {
-        return new LogData(
-                log.getContentsList().stream()
-                        .collect(Collectors.toMap(
-                                Logs.Log.Content::getKey,
-                                Logs.Log.Content::getValue
-                        ))
-        );
-    }
+	@Override
+	public LogData convert(Logs.Log log) {
+		return new LogData(
+				log.getContentsList().stream()
+						.collect(Collectors.toMap(
+								Logs.Log.Content::getKey,
+								Logs.Log.Content::getValue
+						))
+		);
+	}
 }

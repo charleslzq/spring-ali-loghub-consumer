@@ -10,8 +10,8 @@ import java.util.Map;
  */
 @Data
 @ConfigurationProperties(
-        prefix = "spring.ali.log-hub.consumer"
+		prefix = "spring.ali.log-hub.consumer"
 )
 public class LogHubConsumerProperties {
-    private Map<String, LogConsumerConfig> configs;
+	private Map<String, LogConsumerConfig> configs;
 }
